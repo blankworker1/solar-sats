@@ -1,7 +1,5 @@
 # SolarSats v2: local bridge, dashboard and curtailment
 
-29 September 2026 · Carl
-
 ## Purpose and scope
 
 v2 turns SolarSats into a local monitor and controller: one Raspberry Pi Zero 2 W reads the Victron system and the miner, runs the curtailment logic, keeps history, and serves the dashboard to a tablet on the wall. The v1 calculator stays locked and becomes the Plan view of the same app.
