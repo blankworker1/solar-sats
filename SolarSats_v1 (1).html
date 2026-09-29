@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SolarSats — sats stacked by a solar miner</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20200%20200%22%20width%3D%22512%22%20height%3D%22512%22%20role%3D%22img%22%20aria-label%3D%22SolarSats%20logo%22%20xmlns%3Ac2pa%3D%22http%3A//c2pa.org/manifest%22%3E%3Cmetadata%3E%3Cc2pa%3Amanifest%3EAAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTozMjllNzRlOC1kOGU2LTQ1MGUtYTUxMi03YTUyZDBkYzA4MzgAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaFe9%2Bw6J6Jbt50kiU3tRVIgAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDoyNTA4ODllOC00NWE4LTQ4YjctOGM2Mi0yNGFlYmY0ZGVkNThscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoXxKuuHlIDQdq2PxWUurnbwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggsVFM90X60eXXiztmzy2NvBndu/iXDhJzYtDw/CeOZ%2BakZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaJjz/jeC%2BE97kxbWKVfFmJUAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBlpPFqLtmSF3s3zkWxrTazLGOcJqqJWjA8VkQC072eRWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBi9Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjMyOWU3NGU4LWQ4ZTYtNDUwZS1hNTEyLTdhNTJkMGRjMDgzOC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjEyOTU4NzI3LWY2NjMtNDQxNS1hZDFjLTcwNmM5OWYxZWJlYnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCCxUUz3RfrR5deLO2bPLY28Gd27%2BJcOEnNi0PD8J45n5qJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggMAHayqQQtUDj2RGW0gCZkgJRvl/5VW%2BygLZrEDvU0nmiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggrgtKNHuo3vKTsv8/xkUIloIcA/JOwk4b%2BcM1aofDvXB0Y2xhaW1fZ2VuZXJhdG9yX2luZm%2BjZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj%2BOPEz5o%2BnMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1%2BUCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9%2B1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQLP186uGjgtx5EJFQpSyXe2CeZeywyAdtPpaBNi0Eb/HtefqUq%2Bts2h09hHuHUewPLYzkuQrDJEW73rj4%2BlqSsc%3D%3C/c2pa%3Amanifest%3E%3C/metadata%3E%3Ctitle%3ESolarSats%3C/title%3E%3Crect%20width%3D%22200%22%20height%3D%22200%22%20rx%3D%2240%22%20fill%3D%22%23131820%22/%3E%3Cg%20transform%3D%22translate%2820%2020%29%20scale%280.8%29%22%3E%3Cline%20x1%3D%22166.0%22%20y1%3D%22100.0%22%20x2%3D%22182.0%22%20y2%3D%22100.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%22157.2%22%20y1%3D%22133.0%22%20x2%3D%22171.0%22%20y2%3D%22141.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%22133.0%22%20y1%3D%22157.2%22%20x2%3D%22141.0%22%20y2%3D%22171.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%22100.0%22%20y1%3D%22166.0%22%20x2%3D%22100.0%22%20y2%3D%22182.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%2267.0%22%20y1%3D%22157.2%22%20x2%3D%2259.0%22%20y2%3D%22171.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%2242.8%22%20y1%3D%22133.0%22%20x2%3D%2229.0%22%20y2%3D%22141.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%2234.0%22%20y1%3D%22100.0%22%20x2%3D%2218.0%22%20y2%3D%22100.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%2242.8%22%20y1%3D%2267.0%22%20x2%3D%2229.0%22%20y2%3D%2259.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%2267.0%22%20y1%3D%2242.8%22%20x2%3D%2259.0%22%20y2%3D%2229.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%22100.0%22%20y1%3D%2234.0%22%20x2%3D%22100.0%22%20y2%3D%2218.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%22133.0%22%20y1%3D%2242.8%22%20x2%3D%22141.0%22%20y2%3D%2229.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Cline%20x1%3D%22157.2%22%20y1%3D%2267.0%22%20x2%3D%22171.0%22%20y2%3D%2259.0%22%20stroke%3D%22%23F2C94C%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3C/line%3E%3Ccircle%20cx%3D%22100%22%20cy%3D%22100%22%20r%3D%2254%22%20fill%3D%22%23F7931A%22%3E%3C/circle%3E%3Crect%20x%3D%2275.0%22%20y%3D%2274.5%22%20width%3D%2250%22%20height%3D%229%22%20fill%3D%22%23131820%22%3E%3C/rect%3E%3Crect%20x%3D%2275.0%22%20y%3D%2291.5%22%20width%3D%2250%22%20height%3D%229%22%20fill%3D%22%23131820%22%3E%3C/rect%3E%3Crect%20x%3D%2275.0%22%20y%3D%22108.5%22%20width%3D%2250%22%20height%3D%229%22%20fill%3D%22%23131820%22%3E%3C/rect%3E%3Crect%20x%3D%2295.5%22%20y%3D%2261.5%22%20width%3D%229%22%20height%3D%2213%22%20fill%3D%22%23131820%22%3E%3C/rect%3E%3Crect%20x%3D%2295.5%22%20y%3D%22117.5%22%20width%3D%229%22%20height%3D%2213%22%20fill%3D%22%23131820%22%3E%3C/rect%3E%3Cpolygon%20points%3D%220%2C200%200%2C174%2014%2C168%2058%2C142%2092%2C154%20150%2C104%20176%2C82%20188.2%2C71.7%20200%2C57.7%20200%2C200%22%20fill%3D%22%23131820%22%3E%3C/polygon%3E%3Cpolyline%20points%3D%2214%2C168%2058%2C142%2092%2C154%20150%2C104%20176%2C82%22%20fill%3D%22none%22%20stroke%3D%22%23ECE8DE%22%20stroke-width%3D%228%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3C/polyline%3E%3Cpolygon%20points%3D%22188.2%2C71.7%20183.1%2C90.4%20168.9%2C73.6%22%20fill%3D%22%23ECE8DE%22%20stroke%3D%22%23ECE8DE%22%20stroke-width%3D%223%22%20stroke-linejoin%3D%22round%22%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<style>
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --surface-2:#f5f7f9; --line:#d4dae1;
+  --text:#18212b; --muted:#566271; --btc:#c96f06; --btc-soft:rgba(201,111,6,.16);
+  --sun:#b88a0c; --sun-soft:rgba(232,180,40,.28); --sea:#2c7ca0; --good:#2d8a52; --warn:#b0620c;
+  --focus:#2c7ca0;
+  --font:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-num:"Barlow Semi Condensed","Barlow",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131820; --surface:#1a212b; --surface-2:#212a36; --line:#2f3a48;
+    --text:#ece8de; --muted:#9aa4b0; --btc:#f7931a; --btc-soft:rgba(247,147,26,.22);
+    --sun:#f2c94c; --sun-soft:rgba(242,201,76,.18); --sea:#62aed0; --good:#6cc48c; --warn:#e5a646;
+    --focus:#62aed0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131820; --surface:#1a212b; --surface-2:#212a36; --line:#2f3a48;
+  --text:#ece8de; --muted:#9aa4b0; --btc:#f7931a; --btc-soft:rgba(247,147,26,.22);
+  --sun:#f2c94c; --sun-soft:rgba(242,201,76,.18); --sea:#62aed0; --good:#6cc48c; --warn:#e5a646;
+  --focus:#62aed0;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img,svg,canvas{max-width:100%}
+.num{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+header.top{padding:28px 0 8px}
+.brand{display:flex;align-items:center;gap:12px 14px;flex-wrap:wrap}
+.brand .logo{flex:none;width:60px;height:60px;display:block;margin:-6px -2px -6px -6px}
+.brand h1{margin:0;font-family:var(--font-num);font-weight:700;font-size:2rem;letter-spacing:-.01em}
+.brand h1 span{color:var(--btc)}
+.brand p{margin:0;color:var(--muted);max-width:60ch}
+
+/* Hero: the average solar day */
+.day{margin:18px 0 28px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:8px 28px}
+.day-head{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.day-head h2{margin:0;font-size:1.15rem;font-weight:600}
+.months{display:flex;gap:2px;flex-wrap:wrap}
+.months button{font:inherit;font-size:.85rem;border:1px solid transparent;background:none;color:var(--muted);padding:3px 8px;border-radius:6px;cursor:pointer}
+.months button:hover{color:var(--text)}
+.months button[aria-pressed="true"]{border-color:var(--line);background:var(--surface-2);color:var(--text);font-weight:600}
+.day-svg{width:100%;height:auto;display:block}
+.day-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin-top:4px}
+.day-legend i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.day-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;align-content:start;padding-top:6px}
+.day-stats div{border-top:1px solid var(--line);padding-top:6px}
+.day-stats dt{font-size:.8rem;color:var(--muted)}
+.day-stats dd{margin:0;font-family:var(--font-num);font-size:1.35rem;font-weight:600}
+.day-stats .wide{grid-column:1/-1}
+.day-stats .wide dd{color:var(--btc);font-size:1.7rem}
+.day-note{grid-column:1/-1;font-size:.8rem;color:var(--muted);margin:0}
+
+/* Layout */
+.grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:28px;align-items:start}
+aside.controls{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px 18px 18px}
+fieldset{border:0;border-bottom:1px solid var(--line);margin:0;padding:16px 0 12px}
+fieldset:last-of-type{border-bottom:0}
+legend{font-weight:600;font-size:1.02rem;padding:0;margin-bottom:6px}
+.field{margin:10px 0 12px}
+.field[hidden]{display:none}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.row label{font-size:.93rem;display:flex;align-items:center;gap:6px}
+.hint-btn{font:inherit;font-size:.72rem;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer;line-height:1;padding:0}
+.hint-btn[aria-expanded="true"]{color:var(--text);border-color:var(--muted)}
+.hint{font-size:.8rem;color:var(--muted);margin:6px 0 0}
+.box{display:flex;align-items:center;gap:4px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:2px 8px}
+.box input{width:92px;border:0;background:none;color:var(--text);font-family:var(--font-num);font-size:1.02rem;font-weight:600;text-align:right;padding:3px 0}
+.box input:focus{outline:none}
+.box:focus-within{outline:2px solid var(--focus);outline-offset:1px}
+.box span{font-size:.8rem;color:var(--muted);white-space:nowrap}
+select{font:inherit;font-size:.92rem;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:5px 8px;max-width:210px}
+input[type=range]{width:100%;margin:8px 0 0;accent-color:var(--btc)}
+.derived{font-size:.82rem;color:var(--muted);margin-top:4px}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:.9rem}
+.check input{margin-top:4px;accent-color:var(--btc)}
+.custom-months{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.custom-months label{font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.custom-months input{width:100%;font-family:var(--font-num);font-size:.95rem;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;color:var(--text);padding:3px 6px}
+.actions{display:flex;gap:10px;margin-top:6px}
+.btn{font:inherit;font-size:.88rem;border:1px solid var(--line);background:var(--surface-2);color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+
+/* Results */
+.results{display:flex;flex-direction:column;gap:22px;min-width:0}
+.headline{display:grid;grid-template-columns:minmax(0,1fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.total{padding:18px 20px;border-right:1px solid var(--line);background:var(--btc-soft)}
+.total .label{font-size:.9rem;color:var(--muted)}
+.total .big{font-family:var(--font-num);font-weight:700;font-size:2.6rem;line-height:1.05;color:var(--text);margin-top:4px;word-break:break-word}
+.total .sub{font-family:var(--font-num);color:var(--btc);font-weight:600;margin-top:4px}
+.total .net{font-size:.85rem;color:var(--muted);margin-top:8px}
+.readouts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.readouts div{padding:14px 16px;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.readouts div:nth-child(3n){border-right:0}
+.readouts div:nth-last-child(-n+3){border-bottom:0}
+.readouts dt{font-size:.8rem;color:var(--muted)}
+.readouts dd{margin:2px 0 0;font-family:var(--font-num);font-size:1.3rem;font-weight:600}
+.readouts small{display:block;font-size:.76rem;color:var(--muted);font-family:var(--font);font-weight:400}
+.good{color:var(--good)} .warn{color:var(--warn)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.panel h3{margin:0;font-size:1.02rem;font-weight:600}
+.panel p.cap{margin:2px 0 12px;font-size:.84rem;color:var(--muted)}
+.chart-box{position:relative;height:260px}
+.chart-fail{font-size:.9rem;color:var(--muted);padding:30px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.table-scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:560px}
+th,td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:.8rem}
+td{font-family:var(--font-num);font-size:.98rem}
+.assumptions{font-size:.84rem;color:var(--muted);line-height:1.55}
+.assumptions p{margin:0 0 8px;max-width:78ch}
+footer{margin:28px 0 20px;font-size:.8rem;color:var(--muted)}
+
+@media (max-width:980px){
+  .grid{grid-template-columns:1fr}
+  .day{grid-template-columns:1fr}
+  .headline{grid-template-columns:1fr}
+  .total{border-right:0;border-bottom:1px solid var(--line)}
+}
+@media (max-width:620px){
+  .brand h1{font-size:1.6rem}
+  .two{grid-template-columns:1fr}
+  .readouts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .readouts div{border-right:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important}
+  .readouts div:nth-child(2n){border-right:0!important}
+  .total .big{font-size:2.1rem}
+  .day-stats{grid-template-columns:1fr 1fr}
+}
+</style>
+<style>
+/* Miner picker */
+.picker{margin:0 0 28px}
+.picker h2{margin:0 0 2px;font-size:1.15rem;font-weight:600}
+.picker .cap{margin:0 0 12px;font-size:.86rem;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.mcard{font:inherit;text-align:left;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.mcard:hover{border-color:var(--muted)}
+.mcard[aria-pressed="true"]{border-color:var(--btc);box-shadow:inset 0 0 0 1px var(--btc)}
+.mcard .mk{font-size:.78rem;color:var(--muted)}
+.mcard .nm{font-weight:600;font-size:1rem}
+.mcard .sp{font-family:var(--font-num);font-size:1.05rem;font-weight:600;margin-top:6px}
+.mcard .ef{font-size:.8rem;color:var(--muted)}
+.mcard .cl{font-size:.78rem;color:var(--muted);margin-top:4px}
+/* Stack vs price */
+.versus{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
+.vs{padding:18px 20px}
+.vs.stack{background:var(--btc-soft);border-right:1px solid var(--line)}
+.vs .label{font-size:.9rem;color:var(--muted)}
+.vs .big{font-family:var(--font-num);font-weight:700;font-size:2.5rem;line-height:1.05;margin-top:4px;overflow-wrap:anywhere}
+.vs.paid .big{color:var(--muted)}
+.vs .sub{font-size:.88rem;margin-top:6px;color:var(--muted)}
+.vs .sub b{color:var(--text);font-family:var(--font-num);font-size:1rem}
+.vs .verdict{margin-top:8px;font-size:.95rem;font-weight:600}
+.pay{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:4px}
+.pay div{padding:6px 14px 4px 0}
+.pay div+div{padding-left:14px;border-left:1px solid var(--line)}
+.pay dt{font-size:.8rem;color:var(--muted)}
+.pay dd{margin:0;font-family:var(--font-num);font-size:1.3rem;font-weight:600}
+.pay small{display:block;font-family:var(--font);font-size:.76rem;color:var(--muted);font-weight:400}
+@media (max-width:620px){.versus{grid-template-columns:1fr}.vs.stack{border-right:0;border-bottom:1px solid var(--line)}.vs .big{font-size:2rem}.pay{grid-template-columns:1fr 1fr}.pay div:nth-child(3){border-left:0;padding-left:0}}
+.kyc{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted);max-width:52ch}
+.kyc b{display:block;color:var(--text);font-size:.95rem;margin-bottom:2px}
+/* Block schedule hero */
+.sched{margin:18px 0 28px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px 20px}
+.sched h2{margin:0 0 2px;font-size:1.15rem;font-weight:600}
+.sched .cap{margin:0 0 10px;font-size:.86rem;color:var(--muted);max-width:75ch}
+.stair{width:100%;height:auto;display:block}
+.count{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:14px 0 18px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.count div{padding:10px 14px 10px 0}
+.count div+div{padding-left:14px;border-left:1px solid var(--line)}
+.count dt{font-size:.8rem;color:var(--muted)}
+.count dd{margin:0;font-family:var(--font-num);font-weight:700;font-size:1.55rem;line-height:1.2}
+.count small{display:block;font-family:var(--font);font-size:.78rem;color:var(--muted);font-weight:400}
+.epochs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.epoch{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--surface-2)}
+.epoch.now{border-color:var(--btc)}
+.epoch h3{margin:0;font-size:1rem;font-weight:600;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.epoch h3 span{font-weight:400;color:var(--muted);font-size:.85rem}
+.epoch .reward{font-family:var(--font-num);color:var(--muted);font-size:.95rem;margin:2px 0 10px}
+.epoch .per{font-family:var(--font-num);font-weight:700;font-size:2.3rem;line-height:1;color:var(--btc)}
+.epoch .per small{font-size:.95rem;font-weight:500;color:var(--text);margin-left:6px}
+.epoch .line{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);margin-top:10px;padding-top:8px;font-size:.88rem;color:var(--muted)}
+.epoch .line b{font-family:var(--font-num);color:var(--text);font-size:1.05rem;font-weight:600}
+.est-row{display:flex;justify-content:flex-end;margin-top:4px}
+.linkbtn{font:inherit;font-size:.8rem;background:none;border:0;color:var(--sea);cursor:pointer;padding:2px 0;text-decoration:underline}
+.day-panel .day-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:8px 24px}
+.day-panel .day-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+@media (max-width:980px){.day-panel .day-grid{grid-template-columns:1fr}}
+@media (max-width:620px){.count{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.count dd{font-size:1.2rem;overflow-wrap:anywhere}.epoch .per{font-size:1.9rem}.count div:nth-child(3){padding-left:0;border-left:0}.count div:nth-child(n+3){border-top:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 200 200" width="60" height="60" aria-hidden="true" focusable="false"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTozMjllNzRlOC1kOGU2LTQ1MGUtYTUxMi03YTUyZDBkYzA4MzgAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaFe9+w6J6Jbt50kiU3tRVIgAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDoyNTA4ODllOC00NWE4LTQ4YjctOGM2Mi0yNGFlYmY0ZGVkNThscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoXxKuuHlIDQdq2PxWUurnbwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggsVFM90X60eXXiztmzy2NvBndu/iXDhJzYtDw/CeOZ+akZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaJjz/jeC+E97kxbWKVfFmJUAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBlpPFqLtmSF3s3zkWxrTazLGOcJqqJWjA8VkQC072eRWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBi9Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjMyOWU3NGU4LWQ4ZTYtNDUwZS1hNTEyLTdhNTJkMGRjMDgzOC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjEyOTU4NzI3LWY2NjMtNDQxNS1hZDFjLTcwNmM5OWYxZWJlYnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCCxUUz3RfrR5deLO2bPLY28Gd27+JcOEnNi0PD8J45n5qJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggMAHayqQQtUDj2RGW0gCZkgJRvl/5VW+ygLZrEDvU0nmiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggrgtKNHuo3vKTsv8/xkUIloIcA/JOwk4b+cM1aofDvXB0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQLP186uGjgtx5EJFQpSyXe2CeZeywyAdtPpaBNi0Eb/HtefqUq+ts2h09hHuHUewPLYzkuQrDJEW73rj4+lqSsc=</c2pa:manifest></metadata>
+
+<rect width="200" height="200" rx="40" fill="#131820"/>
+<g transform="translate(20 20) scale(0.8)"><line x1="166.0" y1="100.0" x2="182.0" y2="100.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="157.2" y1="133.0" x2="171.0" y2="141.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="133.0" y1="157.2" x2="141.0" y2="171.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="100.0" y1="166.0" x2="100.0" y2="182.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="67.0" y1="157.2" x2="59.0" y2="171.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="42.8" y1="133.0" x2="29.0" y2="141.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="34.0" y1="100.0" x2="18.0" y2="100.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="42.8" y1="67.0" x2="29.0" y2="59.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="67.0" y1="42.8" x2="59.0" y2="29.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="100.0" y1="34.0" x2="100.0" y2="18.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="133.0" y1="42.8" x2="141.0" y2="29.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><line x1="157.2" y1="67.0" x2="171.0" y2="59.0" stroke="#F2C94C" stroke-width="7" stroke-linecap="round"></line><circle cx="100" cy="100" r="54" fill="#F7931A"></circle><rect x="75.0" y="74.5" width="50" height="9" fill="#131820"></rect><rect x="75.0" y="91.5" width="50" height="9" fill="#131820"></rect><rect x="75.0" y="108.5" width="50" height="9" fill="#131820"></rect><rect x="95.5" y="61.5" width="9" height="13" fill="#131820"></rect><rect x="95.5" y="117.5" width="9" height="13" fill="#131820"></rect><polygon points="0,200 0,174 14,168 58,142 92,154 150,104 176,82 188.2,71.7 200,57.7 200,200" fill="#131820"></polygon><polyline points="14,168 58,142 92,154 150,104 176,82" fill="none" stroke="#ECE8DE" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"></polyline><polygon points="188.2,71.7 183.1,90.4 168.9,73.6" fill="#ECE8DE" stroke="#ECE8DE" stroke-width="3" stroke-linejoin="round"></polygon></g></svg>
+      <h1>Solar<span>Sats</span></h1>
+      <p>Sats stacked by a solar-powered miner, block by block, across the halving schedule.</p>
+    </div>
+  </header>
+
+  <section class="sched" aria-labelledby="sched-title">
+    <h2 id="sched-title">The block reward, from the first block to the last new sat</h2>
+    <p class="cap">The subsidy halves every 210,000 blocks. Block 6,929,999 is the last to create new sats; after it, miners earn fees only. Block counts are exact. Future dates assume 10-minute blocks.</p>
+    <svg id="stair" class="stair" viewBox="0 0 1000 236" role="img" aria-label="Block subsidy per halving period from 2009 to about 2140, with your rig's operating window marked"></svg>
+    <dl class="count" id="count"></dl>
+    <div class="epochs" id="epochs"></div>
+  </section>
+
+  <section class="picker" aria-labelledby="picker-title">
+    <h2 id="picker-title">Choose a miner</h2>
+    <p class="cap">Figures are the makers' rated hashrate and wall power; units vary a little. Pick one to fill in the miner inputs, or edit them for your own machine.</p>
+    <div class="cards" id="miner-cards" role="group" aria-label="Miner models"></div>
+  </section>
+
+  <div class="grid">
+    <aside class="controls" aria-label="Inputs" id="controls"></aside>
+
+    <main class="results">
+      <div class="headline">
+        <div class="versus">
+          <div class="vs stack">
+            <div class="label" id="total-label">Sats stacked over 5 years</div>
+            <div class="big" id="m-total">0</div>
+            <div class="sub" id="m-split"></div>
+            <div class="kyc"><b>Newly mined, KYC-free sats</b>Earned by your own hashing and paid by a pool that asks for no ID, straight to your Lightning wallet. Buying usually means an exchange that checks your identity.</div>
+          </div>
+          <div class="vs paid">
+            <div class="label">Hardware price, paid once</div>
+            <div class="big" id="m-price">–</div>
+            <div class="verdict" id="m-verdict"></div>
+          </div>
+        </div>
+        <dl class="readouts">
+          <div><dt>Average per day</dt><dd id="m-daily">–</dd></div>
+          <div><dt>Sats per block</dt><dd id="m-perblock">–</dd></div>
+          <div><dt>Sats per kWh</dt><dd id="m-perkwh">–</dd></div>
+          <div><dt>First 12 months</dt><dd id="m-y1">–</dd></div>
+          <div><dt>Final 12 months</dt><dd id="m-yl">–</dd></div>
+          <div><dt>Average hashrate</dt><dd id="m-avgth">–</dd></div>
+        </dl>
+      </div>
+
+      <section class="panel" aria-labelledby="pay-title">
+        <h3 id="pay-title">How your sats arrive</h3>
+        <p class="cap" id="pay-cap"></p>
+        <dl class="pay" id="pay"></dl>
+      </section>
+
+      <section class="panel">
+        <h3>Sats stacked over time</h3>
+        <p class="cap">Running total, with the hardware price as a flat line when entered. Vertical dashed lines mark halvings.</p>
+        <div class="chart-box"><canvas id="c-cum" aria-label="Cumulative sats chart" role="img"></canvas></div>
+      </section>
+
+      <div class="two">
+        <section class="panel">
+          <h3>Sats per year of operation</h3>
+          <p class="cap">The subsidy halves at each halving; fees don't.</p>
+          <div class="chart-box"><canvas id="c-year" aria-label="Annual sats chart" role="img"></canvas></div>
+        </section>
+        <section class="panel">
+          <h3>Through the first year</h3>
+          <p class="cap">Average sats per day each month, and full-power hours per day.</p>
+          <div class="chart-box"><canvas id="c-season" aria-label="Seasonal chart" role="img"></canvas></div>
+        </section>
+      </div>
+
+      <section class="panel day-panel" aria-labelledby="day-title">
+        <div class="day-head">
+          <h3 id="day-title">An average <span id="day-month">June</span> day at your site</h3>
+          <div class="months" id="months" role="group" aria-label="Choose month"></div>
+        </div>
+        <div class="day-grid">
+          <div>
+            <svg id="day-svg" class="day-svg" viewBox="0 0 640 230" role="img" aria-label="Solar output across an average day and the part used by the miner"></svg>
+            <div class="day-legend">
+              <span><i style="background:var(--sun-soft);border:1px solid var(--sun)"></i>Solar output</span>
+              <span><i style="background:var(--btc)"></i>Used by the miner</span>
+              <span><i style="border-top:2px dashed var(--btc);height:0;border-radius:0"></i>Miner rated power</span>
+              <span id="lg-min"><i style="border-top:2px dotted var(--muted);height:0;border-radius:0"></i>Lowest underclock</span>
+            </div>
+          </div>
+          <dl class="day-stats" id="day-stats"></dl>
+        </div>
+        <p class="day-note" id="day-note" style="margin-top:8px"></p>
+      </section>
+
+      <section class="panel">
+        <h3>Year by year</h3>
+        <p class="cap" id="table-cap"></p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th scope="col">Period</th><th scope="col">Sats</th><th scope="col">of which fees</th><th scope="col">Sats / day</th><th scope="col">Sats / block</th><th scope="col">Energy used</th><th scope="col">Sats / kWh</th><th scope="col">Stacked</th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel assumptions">
+        <h3>How this is worked out</h3>
+        <p>Your solar is treated as surplus: power that would otherwise go unused, so every sat mined is extra. Every day the network finds 144 blocks. Your share of each block is your average hashrate that day divided by the network's, times the subsidy for that block height plus your fee estimate, less pool fee and boot and thermal losses. Braiins Pool pays on FPPS, so you're paid this expected share every day whether or not the pool finds a block. The subsidy follows the protocol exactly: 5,000,000,000 sats halved every 210,000 blocks and rounded down, reaching 1 sat in the last period and zero from block 6,930,000.</p>
+        <p>Your average hashrate comes from the solar model. Each month's energy is spread over an average day shaped like a sine curve, with day length from your latitude. With the sunny/cloudy mix on, 60% of days get 1.3× the average and 40% get 0.55×. In on/off mode the miner runs only when solar covers its rated power. When underclocking, it follows the sun between its lowest setting and full power, with hashrate assumed to scale with power to the 0.75.</p>
+        <p>Network hashrate grows smoothly at the rate you set, and fees per block stay constant in sats. The current block height is estimated from a known recent height at 10 minutes a block unless you enter it. The solar yield presets are rough typical values; use Custom with a PVGIS estimate for your own roof.</p>
+      </section>
+
+      <footer>An estimate, not a promise: network hashrate, fees and weather will differ from any single assumption. Inputs are saved in this browser only.</footer>
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Protocol constants (fixed) ----------
+  const EPOCH = 210000;
+  const INITIAL_SUBSIDY = 5000000000;           // sats
+  const LAST_SUBSIDY_BLOCK = 33 * EPOCH - 1;     // 6,929,999
+  const BLOCK_MS = 600000;
+  const subsidyOfEpoch = e => e >= 33 ? 0 : Math.floor(INITIAL_SUBSIDY / Math.pow(2, e));
+  // Known start dates of past halving periods (UTC)
+  const PAST_STARTS = [Date.UTC(2009,0,3), Date.UTC(2012,10,28), Date.UTC(2016,6,9), Date.UTC(2020,4,11), Date.UTC(2024,3,20)];
+  // Anchor for estimating today's height: ~block 966,011 on 21 Sep 2026
+  const ANCHOR_HEIGHT = 966011, ANCHOR_TIME = Date.UTC(2026, 8, 21, 12);
+
+  // ---------- Solar reference data ----------
+  const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const MONTHS_LONG = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const DAYS_IN = [31,28,31,30,31,30,31,31,30,31,30,31];
+  const MID_DOY = [15,46,74,105,135,166,196,227,258,288,319,349];
+  const PRESETS = {
+    bosa:      { name: "Bosa, Sardinia (40°N)",        lat: 40.3, y: [75,90,125,145,170,180,190,175,140,110,80,70] },
+    criccieth: { name: "Criccieth, North Wales (53°N)", lat: 52.9, y: [25,45,75,105,125,125,125,110,85,55,30,20] }
+  };
+  const UNDERCLOCK_EXP = 0.75;
+  const WEATHER_MIX = [[0.6, 1.3], [0.4, 0.55]];
+  const STORE_KEY = "solarsats.v4";
+  const POOL_FEE_STD = 2.5, POOL_FEE_BOS = 0;   // Braiins Pool FPPS
+  const LN_DAILY_MAX = 500000;                  // Braiins Lightning payout cap per day (0.005 BTC)
+  // Makers' rated figures (stock settings)
+  const MINERS = [
+    { id: "bitaxe",   maker: "Bitaxe",   name: "Gamma",      th: 1.2, w: 17,   cls: "Desk-top board" },
+    { id: "nerdqaxe", maker: "NerdQaxe", name: "NerdQaxe++", th: 4.8, w: 80,   cls: "Desk-top board" },
+    { id: "nano3s",   maker: "Canaan",   name: "Avalon Nano 3S", th: 6, w: 140, cls: "Quiet home unit" },
+    { id: "mini3",    maker: "Canaan",   name: "Avalon Mini 3",  th: 37.5, w: 800, cls: "Room-heater format" },
+    { id: "avalonq",  maker: "Canaan",   name: "Avalon Q",   th: 90,  w: 1674, cls: "Quiet home tower" },
+    { id: "s19kpro",  maker: "Bitmain",  name: "Antminer S19k Pro", th: 120, w: 2760, cls: "Full-size, loud" },
+    { id: "s21",      maker: "Bitmain",  name: "Antminer S21", th: 200, w: 3500, cls: "Full-size, loud" },
+    { id: "s21pro",   maker: "Bitmain",  name: "Antminer S21 Pro", th: 234, w: 3510, cls: "Full-size, loud" }
+  ];
+
+  const DEFAULTS = {
+    location: "bosa", lat: 40.3, custom: PRESETS.bosa.y.slice(),
+    kwp: 6, pvShare: 100, weather: true,
+    miner: "s19kpro", th: 120, watts: 2760, mode: "curtail", minPower: 30, overhead: 3, lifetime: 5, price: 0,
+    height: 0, netEH: 946, growth: 15, feesBlock: 1900000, braiinsOS: false, payThreshold: 10000
+  };
+
+  const FIELDS = {
+    kwp:      { label: "Array size", unit: "kWp", min: 0.1, max: 100, slider: [0.5, 20, 0.5], hint: "Peak rating of the panels feeding the miner." },
+    pvShare:  { label: "Surplus available to the miner", unit: "%", min: 5, max: 100, slider: [5, 100, 5], hint: "The share of your array's output that is genuinely surplus after the house, battery charging or other loads." },
+    lat:      { label: "Latitude", unit: "°", min: -66, max: 66, hint: "Sets day length for each month. Negative for the southern hemisphere." },
+    th:       { label: "Rated hashrate", unit: "TH/s", min: 1, max: 2000, slider: [1, 600, 1], hint: "The miner's hashrate at its stock setting." },
+    watts:    { label: "Rated power", unit: "W", min: 50, max: 20000, hint: "Wall power at the stock setting, including the PSU." },
+    minPower: { label: "Lowest underclock", unit: "% power", min: 5, max: 95, slider: [5, 95, 5], hint: "The lowest power the firmware can hold stably. Below this the miner switches off." },
+    overhead: { label: "Boot and thermal losses", unit: "%", min: 0, max: 30, slider: [0, 15, 0.5], hint: "Hashing lost to daily start-up, ramping and heat throttling." },
+    lifetime: { label: "Years of operation", unit: "yrs", min: 1, max: 10, slider: [1, 10, 1], hint: "How long you expect the hardware to keep running." },
+    price:    { label: "Hardware price", unit: "sats", min: 0, max: 1e10, hint: "What the miner costs you, in sats, paid once. Shown next to the sats it stacks. Leave at 0 to hide the comparison." },
+    height:   { label: "Current block height", unit: "", min: 900000, max: 6930000, hint: "Estimated from a recent known height at 10 minutes a block. Type the height from a block explorer to use the exact figure." },
+    netEH:    { label: "Network hashrate today", unit: "EH/s", min: 50, max: 100000, hint: "Use a 7-day average. Your share of each block is your hashrate divided by this." },
+    growth:   { label: "Network hashrate growth", unit: "%/yr", min: -30, max: 100, slider: [-10, 60, 1], hint: "Faster growth means your share of each block shrinks faster." },
+    payThreshold: { label: "Auto-payout threshold", unit: "sats", min: 1, max: 500000, hint: "Set in your Braiins account. When your balance reaches this, the pool sends it to your Lightning wallet automatically. A single Lightning payout is capped at 500,000 sats." },
+    feesBlock:{ label: "Fees per block", unit: "sats", min: 0, max: 1e9, hint: "Average transaction fees per block. Held constant in sats; fees don't halve." },
+  };
+
+  const GROUPS = [
+    { title: "Your solar site", items: ["location", "customBlock", "kwp", "pvShare", "weather"] },
+    { title: "Your miner", items: ["th", "watts", "mode", "minPower", "overhead", "lifetime", "price"] },
+    { title: "Network and pool", items: ["height", "netEH", "growth", "feesBlock", "pool", "payThreshold"] }
+  ];
+
+  // ---------- Helpers ----------
+  const $ = id => document.getElementById(id);
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const fmt = n => Math.round(n).toLocaleString("en-US");
+  const fmtPer = n => n >= 100 ? fmt(n) : n >= 10 ? n.toFixed(1) : n.toFixed(2);
+  const compact = n => {
+    const a = Math.abs(n);
+    if (a >= 1e9) return (n / 1e9).toFixed(1) + "B";
+    if (a >= 1e6) return (n / 1e6).toFixed(a >= 1e7 ? 0 : 1) + "M";
+    if (a >= 1e3) return (n / 1e3).toFixed(a >= 1e4 ? 0 : 1) + "k";
+    return String(Math.round(n));
+  };
+  const cleanNum = v => String(+(+v).toFixed(4));
+  const monYr = d => `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+
+  let state = loadState();
+
+  function loadState() {
+    const s = JSON.parse(JSON.stringify(DEFAULTS));
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return s;
+      const saved = JSON.parse(raw);
+      for (const k of Object.keys(DEFAULTS)) {
+        if (!(k in saved)) continue;
+        if (k === "height") { const v = Number(saved.height); s.height = v > 0 ? clamp(v, FIELDS.height.min, FIELDS.height.max) : 0; }
+        else if (FIELDS[k]) { const v = Number(saved[k]); if (Number.isFinite(v)) s[k] = clamp(v, FIELDS[k].min, FIELDS[k].max); }
+        else if (k === "custom" && Array.isArray(saved.custom) && saved.custom.length === 12) s.custom = saved.custom.map(v => clamp(Number(v) || 0, 0, 400));
+        else if (k === "location" && (saved.location in PRESETS || saved.location === "custom")) s.location = saved.location;
+        else if (k === "mode" && (saved.mode === "onoff" || saved.mode === "curtail")) s.mode = saved.mode;
+        else if (k === "weather") s.weather = !!saved.weather;
+        else if (k === "braiinsOS") s.braiinsOS = !!saved.braiinsOS;
+        else if (k === "miner" && (saved.miner === "custom" || MINERS.some(m => m.id === saved.miner))) s.miner = saved.miner;
+      }
+    } catch (e) { /* storage unavailable */ }
+    return s;
+  }
+  function saveState() { try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
+
+  // ---------- Block schedule ----------
+  function estimatedHeight(now) { return Math.floor(ANCHOR_HEIGHT + (now.getTime() - ANCHOR_TIME) / BLOCK_MS); }
+  function currentHeight(p, now) { return p.height > 0 ? Math.floor(p.height) : estimatedHeight(now); }
+  function subsidySum(a, b) { // total subsidy of blocks in [a, b), fractional heights allowed
+    let s = 0, x = a;
+    while (x < b) { const e = Math.floor(x / EPOCH); const end = Math.min(b, (e + 1) * EPOCH); s += (end - x) * subsidyOfEpoch(e); x = end; }
+    return s;
+  }
+  function dateOfHeight(H, h0, now) {
+    const e = H / EPOCH;
+    if (Number.isInteger(e) && e < PAST_STARTS.length) return new Date(PAST_STARTS[e]);
+    return new Date(now.getTime() + (H - h0) * BLOCK_MS);
+  }
+  function remainingSubsidy(h) {
+    let s = 0; const e0 = Math.floor(h / EPOCH);
+    s += ((e0 + 1) * EPOCH - h) * subsidyOfEpoch(e0);
+    for (let e = e0 + 1; e < 33; e++) s += EPOCH * subsidyOfEpoch(e);
+    return s;
+  }
+
+  // ---------- Solar model ----------
+  function declination(doy) { return 23.44 * Math.sin(2 * Math.PI * (284 + doy) / 365); }
+  function dayLength(lat, doy) {
+    const r = Math.PI / 180, x = -Math.tan(lat * r) * Math.tan(declination(doy) * r);
+    if (x <= -1) return 24; if (x >= 1) return 0;
+    return 2 * Math.acos(x) / r / 15;
+  }
+  function runDay(E, D, P, mode, minFrac) {
+    if (E <= 0 || D <= 0 || P <= 0) return { thh: 0, kwh: 0 };
+    const peak = E * Math.PI / (2 * D), pOn = mode === "curtail" ? P * minFrac : P;
+    const N = 240, dt = D / N; let thh = 0, kwh = 0;
+    for (let i = 0; i < N; i++) {
+      const p = peak * Math.sin(Math.PI * (i + 0.5) / N);
+      if (p >= pOn) { const u = Math.min(p, P); thh += Math.pow(u / P, UNDERCLOCK_EXP) * dt; kwh += u * dt; }
+    }
+    return { thh, kwh };
+  }
+  const yieldsOf = p => p.location === "custom" ? p.custom : PRESETS[p.location].y;
+  const latOf = p => p.location === "custom" ? p.lat : PRESETS[p.location].lat;
+  function monthProfile(p, cal) {
+    const E = p.kwp * yieldsOf(p)[cal] / DAYS_IN[cal] * (p.pvShare / 100);
+    const D = dayLength(latOf(p), MID_DOY[cal]);
+    const P = p.watts / 1000;
+    let thh = 0, kwh = 0;
+    for (const [w, f] of (p.weather ? WEATHER_MIX : [[1, 1]])) { const r = runDay(E * f, D, P, p.mode, p.minPower / 100); thh += w * r.thh; kwh += w * r.kwh; }
+    return { E, D, P, peak: D > 0 ? E * Math.PI / (2 * D) : 0, thh, kwh };
+  }
+
+  const poolFeeOf = p => p.braiinsOS ? POOL_FEE_BOS : POOL_FEE_STD;
+
+  // ---------- Simulation: one step per day, 144 blocks a day ----------
+  function simulate(p, now) {
+    const profiles = MONTHS.map((_, i) => monthProfile(p, i));
+    const h0 = currentHeight(p, now);
+    const g = p.growth / 100, net0 = p.netEH * 1e6, poolKeep = 1 - poolFeeOf(p) / 100, runKeep = 1 - p.overhead / 100;
+    const nDays = Math.round(p.lifetime * 365.25);
+    const days = [];
+    let cum = 0;
+    for (let d = 0; d < nDays; d++) {
+      const date = new Date(now.getTime() + (d + 0.5) * 864e5);
+      const pr = profiles[date.getMonth()];
+      const effTH = p.th * pr.thh / 24 * runKeep;
+      const net = net0 * Math.pow(1 + g, (d + 0.5) / 365.25);
+      const share = effTH * poolKeep / net;
+      const hA = h0 + 144 * d, hB = hA + 144;
+      const sub = share * subsidySum(hA, hB);
+      const fee = share * 144 * p.feesBlock;
+      cum += sub + fee;
+      days.push({ d, date, cal: date.getMonth(), sub, fee, sats: sub + fee, kwh: pr.kwh, effTH, net, fullH: pr.thh, epoch: Math.floor((hA + 72) / EPOCH), cum });
+    }
+
+    // Years of operation
+    const years = [];
+    for (let y = 0; y < p.lifetime; y++) {
+      const sl = days.filter(r => Math.floor(r.d / 365.25) === y);
+      if (!sl.length) continue;
+      const sum = k => sl.reduce((a, r) => a + r[k], 0);
+      years.push({ label: "Year " + (y + 1), from: sl[0].date, to: sl[sl.length - 1].date, days: sl.length,
+        sats: sum("sats"), sub: sum("sub"), fee: sum("fee"), kwh: sum("kwh"), cum: sl[sl.length - 1].cum,
+        avgTH: sum("effTH") / sl.length, halving: sl.some((r, i) => i > 0 && r.epoch !== sl[i - 1].epoch) });
+    }
+
+    // Calendar months (for charts)
+    const months = [];
+    for (const r of days) {
+      const key = r.date.getFullYear() * 12 + r.date.getMonth();
+      let m = months[months.length - 1];
+      if (!m || m.key !== key) { m = { key, date: new Date(r.date.getFullYear(), r.date.getMonth(), 1), sats: 0, days: 0, fullH: r.fullH, cum: 0, epoch: r.epoch }; months.push(m); }
+      m.sats += r.sats; m.days++; m.cum = r.cum; m.epochEnd = r.epoch;
+    }
+
+    // Halving periods within the operating window
+    const epochs = [];
+    for (const r of days) {
+      let e = epochs[epochs.length - 1];
+      if (!e || e.e !== r.epoch) { e = { e: r.epoch, sats: 0, sub: 0, fee: 0, days: 0, from: r.date, startNet: r.net }; epochs.push(e); }
+      e.sats += r.sats; e.sub += r.sub; e.fee += r.fee; e.days++; e.to = r.date;
+    }
+    for (const e of epochs) {
+      e.subsidy = subsidyOfEpoch(e.e);
+      e.blocks = e.days * 144;
+      e.perBlock = e.sats / e.blocks;
+      e.fullPerBlock = p.th * runKeep * poolKeep / e.startNet * (e.subsidy + p.feesBlock);
+      e.start = dateOfHeight(e.e * EPOCH, h0, now);
+      e.end = dateOfHeight((e.e + 1) * EPOCH, h0, now);
+    }
+
+    const totalKWh = days.reduce((a, r) => a + r.kwh, 0);
+    const totalSub = days.reduce((a, r) => a + r.sub, 0);
+    const hashpriceNow = 144 * (subsidyOfEpoch(Math.floor(h0 / EPOCH)) + p.feesBlock) / net0; // sats/TH/day
+    return { h0, days, years, months, epochs, profiles, total: cum, totalSub, totalFee: cum - totalSub, totalKWh, hashpriceNow, nDays };
+  }
+
+  // ---------- Form ----------
+  const hintHTML = (id, t) => `<p class="hint" id="${id}-hint" hidden>${t}</p>`;
+  const hintBtn = (id, l) => `<button type="button" class="hint-btn" aria-expanded="false" aria-controls="${id}-hint" aria-label="About ${l}">?</button>`;
+  function numberField(id) {
+    const f = FIELDS[id];
+    const sl = f.slider ? `<input type="range" id="${id}-r" min="${f.slider[0]}" max="${f.slider[1]}" step="${f.slider[2]}" aria-label="${f.label} slider" tabindex="-1">` : "";
+    const extra = id === "watts" ? '<div class="derived" id="jth"></div>'
+      : id === "height" ? '<div class="est-row"><span class="derived" id="height-src" style="margin-right:auto"></span><button type="button" class="linkbtn" id="height-auto">Use estimate</button></div>' : "";
+    return `<div class="field" id="wrap-${id}">
+      <div class="row"><label for="${id}">${f.label} ${hintBtn(id, f.label)}</label>
+        <div class="box"><input type="number" inputmode="decimal" id="${id}" min="${f.min}" max="${f.max}" step="any">${f.unit ? `<span>${f.unit}</span>` : ""}</div></div>
+      ${sl}${hintHTML(id, f.hint)}${extra}
+    </div>`;
+  }
+  function buildForm() {
+    let html = "";
+    for (const g of GROUPS) {
+      html += `<fieldset><legend>${g.title}</legend>`;
+      for (const it of g.items) {
+        if (FIELDS[it]) { html += numberField(it); continue; }
+        if (it === "location") {
+          html += `<div class="field"><div class="row"><label for="location">Location ${hintBtn("location", "location")}</label>
+            <select id="location">${Object.entries(PRESETS).map(([k, v]) => `<option value="${k}">${v.name}</option>`).join("")}<option value="custom">Custom</option></select></div>
+            ${hintHTML("location", "Presets use rough typical yields. Pick Custom to enter your own monthly figures, for example from PVGIS.")}</div>`;
+        } else if (it === "customBlock") {
+          html += `<div class="field" id="wrap-custom" hidden>${numberField("lat")}
+            <div class="row"><span style="font-size:.93rem">Monthly yield, kWh per kWp</span></div>
+            <div class="custom-months">${MONTHS.map((m, i) => `<label>${m}<input type="number" step="any" min="0" max="400" inputmode="decimal" id="cm${i}"></label>`).join("")}</div></div>`;
+        } else if (it === "weather") {
+          html += `<div class="field"><label class="check"><input type="checkbox" id="weather"> <span>Mix sunny and cloudy days instead of using one average day</span></label></div>`;
+        } else if (it === "pool") {
+          html += `<div class="field"><div class="row"><span style="font-size:.93rem">Pool</span><span style="font-size:.93rem;font-weight:600">Braiins Pool, Lightning payouts</span></div>
+            <label class="check" style="margin-top:10px"><input type="checkbox" id="braiinsOS"> <span>Running Braiins OS firmware (0% pool fee instead of 2.5%)</span></label>
+            <p class="hint">Braiins OS runs on many Antminer models, not on Avalon or Bitaxe units. It also handles power targets, which is what lets a miner follow the sun.</p></div>`;
+        } else if (it === "mode") {
+          html += `<div class="field"><div class="row"><label for="mode">When the sun is weak ${hintBtn("mode", "control mode")}</label>
+            <select id="mode"><option value="curtail">Underclock to follow the sun</option><option value="onoff">Run at full power or not at all</option></select></div>
+            ${hintHTML("mode", "Underclocking needs firmware that can change power on the fly, driven by a controller reading your solar output.")}</div>`;
+        }
+      }
+      html += `</fieldset>`;
+    }
+    html += `<div class="actions"><button type="button" class="btn" id="reset">Reset to defaults</button></div>`;
+    $("controls").innerHTML = html;
+  }
+  function writeInputs() {
+    for (const id of Object.keys(FIELDS)) {
+      const el = $(id); if (!el) continue;
+      if (id === "height") continue;
+      el.value = cleanNum(state[id]);
+      const r = $(id + "-r"); if (r) r.value = state[id];
+    }
+    writeHeight();
+    $("location").value = state.location; $("mode").value = state.mode; $("weather").checked = state.weather; $("braiinsOS").checked = state.braiinsOS;
+    state.custom.forEach((v, i) => { $("cm" + i).value = cleanNum(v); });
+    syncVisibility();
+  }
+  function writeHeight() {
+    const h = currentHeight(state, new Date());
+    if (document.activeElement !== $("height")) $("height").value = h;
+    $("height-src").textContent = state.height > 0 ? "Entered by you" : "Estimated for today";
+    $("height-auto").hidden = !(state.height > 0);
+  }
+  function syncVisibility() {
+    $("wrap-custom").hidden = state.location !== "custom";
+    $("wrap-minPower").hidden = state.mode !== "curtail";
+    $("lg-min").style.display = state.mode === "curtail" ? "" : "none";
+    $("jth").textContent = `Efficiency: ${(state.watts / state.th).toFixed(1)} J/TH`;
+  }
+  function bindForm() {
+    for (const id of Object.keys(FIELDS)) {
+      const f = FIELDS[id], el = $(id), r = $(id + "-r");
+      el.addEventListener("input", () => {
+        const v = parseFloat(el.value);
+        if (!Number.isFinite(v)) return;
+        if (id === "height" && (v < f.min || v > f.max)) return; // wait until a full height is typed
+        state[id] = clamp(v, f.min, f.max);
+        if (r) r.value = state[id];
+        if (id === "th" || id === "watts") markCustomMiner();
+        schedule();
+      });
+      el.addEventListener("change", () => { if (id === "height") writeHeight(); else el.value = cleanNum(state[id]); });
+      if (r) r.addEventListener("input", () => { state[id] = parseFloat(r.value); el.value = cleanNum(state[id]); if (id === "th") markCustomMiner(); schedule(); });
+    }
+    $("height-auto").addEventListener("click", () => { state.height = 0; writeHeight(); schedule(); });
+    $("location").addEventListener("change", e => {
+      const prev = state.location; state.location = e.target.value;
+      if (state.location === "custom" && prev in PRESETS) { state.custom = PRESETS[prev].y.slice(); state.lat = PRESETS[prev].lat; writeInputs(); }
+      schedule();
+    });
+    MONTHS.forEach((_, i) => {
+      const el = $("cm" + i);
+      el.addEventListener("input", () => { const v = parseFloat(el.value); if (!Number.isFinite(v)) return; state.custom[i] = clamp(v, 0, 400); schedule(); });
+      el.addEventListener("change", () => { el.value = cleanNum(state.custom[i]); });
+    });
+    $("mode").addEventListener("change", e => { state.mode = e.target.value; schedule(); });
+    $("weather").addEventListener("change", e => { state.weather = e.target.checked; schedule(); });
+    $("braiinsOS").addEventListener("change", e => { state.braiinsOS = e.target.checked; schedule(); });
+    $("reset").addEventListener("click", () => {
+      state = JSON.parse(JSON.stringify(DEFAULTS));
+      try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+      writeInputs(); renderMinerCards(); schedule();
+    });
+    $("controls").addEventListener("click", e => {
+      const b = e.target.closest(".hint-btn"); if (!b) return;
+      const h = $(b.getAttribute("aria-controls")), open = b.getAttribute("aria-expanded") !== "true";
+      b.setAttribute("aria-expanded", String(open)); h.hidden = !open;
+    });
+  }
+
+  // ---------- Miner cards ----------
+  function renderMinerCards() {
+    const cards = MINERS.map(m => `<button type="button" class="mcard" data-id="${m.id}" aria-pressed="${state.miner === m.id}">
+        <span class="mk">${m.maker}</span><span class="nm">${m.name}</span>
+        <span class="sp">${m.th} TH/s</span><span class="ef">${fmt(m.w)} W, ${(m.w / m.th).toFixed(1)} J/TH</span><span class="cl">${m.cls}</span></button>`).join("");
+    const custom = `<button type="button" class="mcard" data-id="custom" aria-pressed="${state.miner === "custom"}">
+        <span class="mk">Your own</span><span class="nm">Custom</span><span class="sp">${cleanNum(state.th)} TH/s</span><span class="ef">${fmt(state.watts)} W, set in the miner inputs</span></button>`;
+    $("miner-cards").innerHTML = cards + custom;
+  }
+  function markCustomMiner() {
+    if (state.miner === "custom") { renderMinerCards(); return; }
+    state.miner = "custom"; renderMinerCards();
+  }
+  function bindMinerCards() {
+    $("miner-cards").addEventListener("click", e => {
+      const b = e.target.closest(".mcard"); if (!b) return;
+      const m = MINERS.find(x => x.id === b.dataset.id);
+      state.miner = b.dataset.id;
+      if (m) { state.th = m.th; state.watts = m.w; writeInputs(); }
+      else { const el = $("th"); el.focus(); el.scrollIntoView({ block: "center", behavior: "smooth" }); }
+      renderMinerCards(); schedule();
+    });
+  }
+
+  // ---------- Schedule hero ----------
+  function renderSchedule(res) {
+    const now = new Date(), h0 = res.h0;
+    const W = 1000, H = 236, L = 112, R = 16, T = 24, B = 30;
+    const yStart = 2009, yEnd = 2142;
+    const yearOf = d => d.getUTCFullYear() + (d.getUTCMonth() + d.getUTCDate() / 31) / 12;
+    const x = yr => L + (yr - yStart) / (yEnd - yStart) * (W - L - R);
+    const lvl = e => H - B - ((33 - e) / 33) * (H - T - B); // one equal step per halving (log scale)
+    let path = `M${x(yStart)},${H - B}`;
+    for (let e = 0; e < 33; e++) {
+      const s = yearOf(dateOfHeight(e * EPOCH, h0, now)), en = yearOf(dateOfHeight((e + 1) * EPOCH, h0, now));
+      path += ` L${x(s).toFixed(1)},${lvl(e).toFixed(1)} L${x(en).toFixed(1)},${lvl(e).toFixed(1)}`;
+    }
+    const endYr = yearOf(dateOfHeight(33 * EPOCH, h0, now));
+    path += ` L${x(endYr).toFixed(1)},${H - B} Z`;
+    const nowYr = yearOf(now), winEnd = nowYr + state.lifetime;
+    const ticks = [2009, 2024, 2040, 2060, 2080, 2100, 2120, 2140].map(yr =>
+      `<text x="${x(yr)}" y="${H - 10}" text-anchor="middle" font-size="13" fill="var(--muted)">${yr}</text>`).join("");
+    const yl = [[0, "5,000,000,000"], [4, "312,500,000"], [16, "76,293"], [32, "1"]].map(([e, t]) =>
+      `<text x="${L - 8}" y="${lvl(e) + 4}" text-anchor="end" font-size="12.5" fill="var(--muted)">${t}</text><line x1="${L}" x2="${W - R}" y1="${lvl(e)}" y2="${lvl(e)}" stroke="var(--line)" opacity=".6"/>`).join("");
+    $("stair").innerHTML = `${yl}${ticks}
+      <text x="${L - 8}" y="${T - 12}" text-anchor="end" font-size="12" fill="var(--muted)">sats per block</text>
+      <rect x="${x(nowYr)}" y="${T}" width="${Math.max(3, x(winEnd) - x(nowYr))}" height="${H - T - B}" fill="var(--sun-soft)"/>
+      <path d="${path}" fill="var(--btc-soft)" stroke="var(--btc)" stroke-width="2" stroke-linejoin="round"/>
+      <line x1="${x(nowYr)}" x2="${x(nowYr)}" y1="${T}" y2="${H - B}" stroke="var(--text)" stroke-width="1.5"/>
+      <text x="${x(winEnd) + 6}" y="${T + 14}" font-size="13" fill="var(--text)">your rig, ${state.lifetime} yr${state.lifetime > 1 ? "s" : ""}</text>
+      <text x="${x(endYr) - 4}" y="${lvl(24)}" text-anchor="end" font-size="12.5" fill="var(--btc)">last new sat, ~${Math.floor(endYr)}</text>`;
+
+    const e0 = Math.floor(h0 / EPOCH), nextH = (e0 + 1) * EPOCH;
+    const toNext = nextH - h0, toLast = LAST_SUBSIDY_BLOCK - h0;
+    $("count").innerHTML = `
+      <div><dt>Block height</dt><dd>${fmt(h0)}</dd><small>${state.height > 0 ? "as entered" : "estimated for today"}</small></div>
+      <div><dt>Blocks to next halving</dt><dd>${fmt(toNext)}</dd><small>block ${fmt(nextH)}, about ${monYr(dateOfHeight(nextH, h0, now))}</small></div>
+      <div><dt>Blocks to the last new sat</dt><dd>${fmt(toLast)}</dd><small>block ${fmt(LAST_SUBSIDY_BLOCK)}, about ${dateOfHeight(LAST_SUBSIDY_BLOCK, h0, now).getFullYear()}</small></div>
+      <div><dt>Sats still to be mined</dt><dd>${fmt(remainingSubsidy(h0))}</dd><small>across ${33 - e0 - 1} more halvings</small></div>`;
+
+    $("epochs").innerHTML = res.epochs.map((e, i) => `
+      <article class="epoch${i === 0 ? " now" : ""}">
+        <h3>Halving period ${e.e + 1} <span>${e.start > now ? "~" : ""}${monYr(e.start)} – ${e.end > now ? "~" : ""}${monYr(e.end)}</span></h3>
+        <div class="reward">${fmt(e.subsidy)} sats subsidy + ${fmt(state.feesBlock)} fees per block</div>
+        <div class="per">${fmtPer(e.perBlock)}<small>sats per block, your average</small></div>
+        <div class="line"><span>At full power</span><b>${fmtPer(e.fullPerBlock)} sats/block</b></div>
+        <div class="line"><span>Stacked, ${monYr(e.from)} – ${monYr(e.to)}</span><b>${fmt(e.sats)}</b></div>
+      </article>`).join("");
+  }
+
+  // ---------- Solar day panel ----------
+  let dayMonth = new Date().getMonth();
+  function buildMonthButtons() {
+    $("months").innerHTML = MONTHS.map((m, i) => `<button type="button" data-m="${i}" aria-pressed="${i === dayMonth}">${m}</button>`).join("");
+    $("months").addEventListener("click", e => {
+      const b = e.target.closest("button[data-m]"); if (!b) return;
+      dayMonth = +b.dataset.m;
+      [...$("months").children].forEach(x => x.setAttribute("aria-pressed", String(+x.dataset.m === dayMonth)));
+      renderDay(lastResult);
+    });
+  }
+  function niceTicks(max) {
+    const raw = max / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const step = [1, 2, 2.5, 5, 10].map(s => s * mag).find(s => s >= raw) || mag * 10;
+    const out = []; for (let v = step; v < max; v += step) out.push(+v.toFixed(3)); return out;
+  }
+  function renderDay(res) {
+    const pr = res.profiles[dayMonth];
+    const W = 640, H = 230, L = 40, R = 12, T = 14, B = 30;
+    const P = pr.P, pOn = state.mode === "curtail" ? P * state.minPower / 100 : P;
+    const ymax = Math.max(pr.peak, P) * 1.15 || 1;
+    const x = h => L + (h / 24) * (W - L - R), y = kw => H - B - (kw / ymax) * (H - T - B);
+    const rise = 12 - pr.D / 2, N = 120;
+    let pv = "", used = "";
+    if (pr.D > 0) {
+      pv = `M${x(rise)},${y(0)}`; used = pv;
+      for (let i = 0; i <= N; i++) {
+        const t = rise + pr.D * i / N, p = pr.peak * Math.sin(Math.PI * i / N);
+        pv += ` L${x(t).toFixed(1)},${y(p).toFixed(1)}`;
+        used += ` L${x(t).toFixed(1)},${y(p >= pOn ? Math.min(p, P) : 0).toFixed(1)}`;
+      }
+      pv += ` L${x(rise + pr.D)},${y(0)} Z`; used += ` L${x(rise + pr.D)},${y(0)} Z`;
+    }
+    const grid = [0, 6, 12, 18, 24].map(h => `<line x1="${x(h)}" x2="${x(h)}" y1="${T}" y2="${H - B}" stroke="var(--line)"/><text x="${x(h)}" y="${H - 10}" text-anchor="${h === 0 ? "start" : h === 24 ? "end" : "middle"}" font-size="12" fill="var(--muted)">${String(h % 24).padStart(2, "0")}:00</text>`).join("");
+    const yT = niceTicks(ymax).map(v => `<text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="12" fill="var(--muted)">${v}</text><line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" opacity=".5"/>`).join("");
+    const minLine = state.mode === "curtail" ? `<line x1="${L}" x2="${W - R}" y1="${y(pOn)}" y2="${y(pOn)}" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="2 4"/>` : "";
+    $("day-svg").innerHTML = `${yT}${grid}<text x="${L}" y="${T - 2}" font-size="12" fill="var(--muted)">kW</text>
+      <path d="${pv}" fill="var(--sun-soft)" stroke="var(--sun)" stroke-width="2"/><path d="${used}" fill="var(--btc)" opacity=".85"/>
+      <line x1="${L}" x2="${W - R}" y1="${y(P)}" y2="${y(P)}" stroke="var(--btc)" stroke-width="2" stroke-dasharray="7 5"/>${minLine}
+      <text x="${W - R}" y="${y(P) - 6}" text-anchor="end" font-size="12" fill="var(--btc)">miner ${P.toFixed(2)} kW</text>`;
+
+    const inMonth = res.days.slice(0, 366).filter(r => r.cal === dayMonth);
+    const satsDay = inMonth.length ? inMonth.reduce((a, r) => a + r.sats, 0) / inMonth.length : null;
+    $("day-month").textContent = MONTHS_LONG[dayMonth];
+    $("day-stats").innerHTML = `
+      <div><dt>Daylight</dt><dd>${pr.D.toFixed(1)} h</dd></div>
+      <div><dt>Solar for the miner</dt><dd>${pr.E.toFixed(1)} kWh</dd></div>
+      <div><dt>Miner uses (${pr.E > 0 ? Math.round(pr.kwh / pr.E * 100) : 0}%)</dt><dd>${pr.kwh.toFixed(1)} kWh</dd></div>
+      <div><dt>Full-power hours</dt><dd>${pr.thh.toFixed(1)} h</dd></div>
+      <div class="wide"><dt>Sats per day${inMonth.length ? " in " + MONTHS[dayMonth] + " " + inMonth[0].date.getFullYear() : ""}</dt><dd>${satsDay === null ? "–" : fmt(satsDay)}</dd></div>`;
+    const wasted = pr.E - pr.kwh;
+    $("day-note").textContent = pr.peak < pOn && !state.weather
+      ? "On an average day this month the panels never reach the power the miner needs to start."
+      : `${wasted > 0.05 ? wasted.toFixed(1) + " kWh a day is left unused" + (state.mode === "onoff" ? ", mostly while output is below what the miner needs to start" : pr.peak > P ? ", mostly around midday when the array outpaces the miner" : ", in the early morning and evening") + ". " : ""}The curve shows an average day${state.weather ? "; the figures blend sunny and cloudy days" : ""}.`;
+  }
+
+  // ---------- Results ----------
+  function renderMetrics(res) {
+    const p = state;
+    $("total-label").textContent = `Sats stacked over ${p.lifetime} year${p.lifetime > 1 ? "s" : ""}`;
+    $("m-total").textContent = fmt(res.total);
+    $("m-split").innerHTML = `<b>${fmt(res.totalSub)}</b> subsidy + <b>${fmt(res.totalFee)}</b> fees`;
+    if (p.price > 0) {
+      $("m-price").textContent = fmt(p.price);
+      const diff = res.total - p.price, ratio = res.total / p.price;
+      $("m-verdict").innerHTML = diff >= 0
+        ? `<span class="good">The miner stacks ${ratio.toFixed(2)}× its price, ${fmt(diff)} sats more than buying.</span>`
+        : `<span class="warn">The miner stacks ${Math.round(ratio * 100)}% of its price, ${fmt(-diff)} sats fewer than buying.</span>`;
+    } else {
+      $("m-price").textContent = "–";
+      $("m-verdict").innerHTML = `<span style="color:var(--muted);font-weight:400">Enter the hardware price in sats, under Your miner, to compare mining with buying.</span>`;
+    }
+    $("m-perblock").innerHTML = `${fmtPer(res.total / (res.nDays * 144))}<small>average over ${fmt(res.nDays * 144)} blocks</small>`;
+    $("m-daily").innerHTML = `${fmt(res.total / res.nDays)}<small>sats, all days averaged</small>`;
+    $("m-perkwh").innerHTML = `${(res.totalKWh > 0 ? res.total / res.totalKWh : 0).toFixed(1)}<small>over ${fmt(res.totalKWh)} kWh of surplus</small>`;
+    const y1 = res.years[0], yl = res.years[res.years.length - 1];
+    $("m-y1").innerHTML = `${fmt(y1.sats)}<small>sats</small>`;
+    const drop = y1.sats > 0 ? (1 - yl.sats / y1.sats) * 100 : 0;
+    $("m-yl").innerHTML = res.years.length > 1 ? `${fmt(yl.sats)}<small>${drop >= 0 ? drop.toFixed(0) + "% below year 1" : Math.abs(drop).toFixed(0) + "% above year 1"}</small>` : "–<small>Only one year modelled</small>";
+    $("m-avgth").innerHTML = `${y1.avgTH.toFixed(1)} TH/s<small>year 1, over 24 h, of ${fmt(p.th)} rated</small>`;
+    const firstYear = res.months.slice(0, 12).map(m => m.sats / m.days);
+    const lo = Math.min(...firstYear), hi = Math.max(...firstYear);
+    const loM = res.months[firstYear.indexOf(lo)], hiM = res.months[firstYear.indexOf(hi)];
+    // Balance builds daily; the pool pays out automatically once it reaches the threshold.
+    let bal = 0, payouts = 0, paid = 0, firstDay = null;
+    for (const d of res.days) {
+      bal += d.sats;
+      if (bal >= p.payThreshold) {
+        const amt = Math.min(bal, LN_DAILY_MAX);
+        bal -= amt; paid += amt; payouts++;
+        if (firstDay === null) firstDay = d.d + 1;
+      }
+    }
+    const lifeTxt = `${p.lifetime} yr${p.lifetime > 1 ? "s" : ""}`;
+    $("pay-cap").textContent = `Braiins Pool credits your FPPS earnings every day and sends them to your Lightning wallet automatically when your balance reaches the threshold you set. No ID, no exchange. Pool fee: ${poolFeeOf(p)}%${p.braiinsOS ? " with Braiins OS" : " on stock firmware"}.`;
+    const firstDate = firstDay !== null ? new Date(Date.now() + firstDay * 864e5) : null;
+    $("pay").innerHTML = `
+      <div><dt>First payout</dt><dd>${firstDay === null ? "Not reached" : firstDay <= 1 ? "Tomorrow" : "In " + fmt(firstDay) + " days"}</dd><small>${firstDate ? "around " + firstDate.getDate() + " " + MONTHS[firstDate.getMonth()] + " " + firstDate.getFullYear() : "lower the threshold"}</small></div>
+      <div><dt>Payouts over ${lifeTxt}</dt><dd>${fmt(payouts)}</dd><small>${payouts > 1 ? (Math.round(res.nDays / payouts) <= 1 ? "daily" : "about every " + Math.round(res.nDays / payouts) + " days") : "at a " + fmt(p.payThreshold) + "-sat threshold"}</small></div>
+      <div><dt>Average payout</dt><dd>${payouts ? fmt(paid / payouts) : "–"}</dd><small>sats per payout</small></div>
+      <div><dt>Earned per day, year 1</dt><dd>${fmt(lo)}–${fmt(hi)}</dd><small>${MONTHS[loM.date.getMonth()]} low, ${MONTHS[hiM.date.getMonth()]} high</small></div>`;
+    const hy = res.years.findIndex(y => y.halving);
+    $("table-cap").textContent = hy >= 0 ? `The subsidy halves during year ${hy + 1}. Sats per block is your average across all 144 network blocks a day.` : "No halving falls inside this period. Sats per block is your average across all 144 network blocks a day.";
+    $("tbody").innerHTML = res.years.map(y => `<tr>
+      <td>${y.label} <span style="color:var(--muted)">${monYr(y.from)} – ${monYr(y.to)}</span>${y.halving ? ' <span class="warn">halving</span>' : ""}</td>
+      <td>${fmt(y.sats)}</td><td>${fmt(y.fee)}</td><td>${fmt(y.sats / y.days)}</td><td>${fmtPer(y.sats / (y.days * 144))}</td>
+      <td>${fmt(y.kwh)} kWh</td><td>${y.kwh > 0 ? (y.sats / y.kwh).toFixed(1) : "–"}</td><td>${fmt(y.cum)}</td></tr>`).join("");
+  }
+
+  // ---------- Charts ----------
+  const charts = {};
+  const hasChart = typeof window.Chart !== "undefined";
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const halvingLines = {
+    id: "halvingLines",
+    afterDatasetsDraw(chart, args, opts) {
+      const idx = opts && opts.indices; if (!idx || !idx.length) return;
+      const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+      ctx.save(); ctx.strokeStyle = opts.color; ctx.fillStyle = opts.color; ctx.setLineDash([4, 4]); ctx.font = "12px Barlow, system-ui, sans-serif";
+      for (const i of idx) { const px = x.getPixelForValue(i); ctx.beginPath(); ctx.moveTo(px, top); ctx.lineTo(px, bottom); ctx.stroke(); ctx.fillText("halving", px + 5, top + 12); }
+      ctx.restore();
+    }
+  };
+  function baseOptions() {
+    const muted = css("--muted"), line = css("--line");
+    return {
+      responsive: true, maintainAspectRatio: false, animation: false,
+      interaction: { mode: "index", intersect: false },
+      plugins: { colors: { enabled: false }, legend: { labels: { color: muted, boxWidth: 12 } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: muted, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } },
+        y: { grid: { color: line }, ticks: { color: muted, callback: v => compact(v) }, beginAtZero: true }
+      }
+    };
+  }
+  function initCharts() {
+    if (!hasChart) {
+      ["c-cum", "c-year", "c-season"].forEach(id => { $(id).parentNode.innerHTML = '<p class="chart-fail">The chart library didn\'t load. The figures and table still work.</p>'; });
+      return;
+    }
+    Chart.defaults.font.family = "Barlow, system-ui, sans-serif";
+    const btc = css("--btc"), sea = css("--sea"), sun = css("--sun"), muted = css("--muted"), btcSoft = css("--btc-soft");
+    const tipSats = ctx => ` ${ctx.dataset.label}: ${fmt(ctx.raw)} sats`;
+    const withTip = (o, cb) => { o.plugins.tooltip = { callbacks: { label: cb } }; return o; };
+    const cOpts = withTip(baseOptions(), tipSats);
+    cOpts.plugins.legend.display = false;
+    cOpts.plugins.halvingLines = { indices: [], color: muted };
+    charts.cum = new Chart($("c-cum"), { type: "line", plugins: [halvingLines], data: { labels: [], datasets: [
+      { label: "Sats stacked", data: [], borderColor: btc, backgroundColor: btcSoft, borderWidth: 2.5, pointRadius: 0, fill: true, tension: 0.2 },
+      { label: "Hardware price", data: [], borderColor: muted, backgroundColor: muted, borderWidth: 1.5, pointRadius: 0, borderDash: [8, 5], fill: false }
+    ] }, options: cOpts });
+    const yOpts = withTip(baseOptions(), tipSats);
+    yOpts.scales.x.stacked = true; yOpts.scales.y.stacked = true;
+    charts.year = new Chart($("c-year"), { type: "bar", data: { labels: [], datasets: [
+      { label: "Block subsidy", data: [], backgroundColor: btc, borderRadius: 3 },
+      { label: "Fees", data: [], backgroundColor: sea, borderRadius: 3 }
+    ] }, options: yOpts });
+    const sOpts = withTip(baseOptions(), ctx => ctx.dataset.yAxisID === "y1" ? ` ${ctx.raw.toFixed(1)} full-power hours/day` : ` ${fmt(ctx.raw)} sats/day`);
+    sOpts.scales.y1 = { position: "right", beginAtZero: true, grid: { display: false }, ticks: { color: muted, callback: v => v + " h" } };
+    charts.season = new Chart($("c-season"), { type: "bar", data: { labels: [], datasets: [
+      { type: "bar", label: "Sats per day", data: [], backgroundColor: btc, borderRadius: 3, yAxisID: "y" },
+      { type: "line", label: "Full-power h/day", data: [], borderColor: sun, backgroundColor: sun, borderWidth: 2, pointRadius: 2, yAxisID: "y1", tension: 0.3 }
+    ] }, options: sOpts });
+  }
+  function retheme() {
+    if (!hasChart) return;
+    for (const k of Object.keys(charts)) { charts[k].destroy(); delete charts[k]; }
+    initCharts();
+    if (lastResult) renderCharts(lastResult);
+  }
+  function renderCharts(res) {
+    if (!hasChart) return;
+    const lbl = d => `${MONTHS[d.getMonth()]} \u2019${String(d.getFullYear()).slice(2)}`;
+    const c = charts;
+    c.cum.data.labels = res.months.map(m => lbl(m.date));
+    c.cum.data.datasets[0].data = res.months.map(m => Math.round(m.cum));
+    c.cum.data.datasets[1].data = res.months.map(() => state.price);
+    c.cum.data.datasets[1].hidden = !(state.price > 0);
+    c.cum.options.plugins.halvingLines.indices = res.months.map((m, i) => m.epochEnd !== m.epoch || (i > 0 && res.months[i - 1].epochEnd !== m.epoch) ? i : -1).filter(i => i >= 0);
+    c.year.data.labels = res.years.map(y => y.label);
+    c.year.data.datasets[0].data = res.years.map(y => Math.round(y.sub));
+    c.year.data.datasets[1].data = res.years.map(y => Math.round(y.fee));
+    const first = res.months.slice(0, 12);
+    c.season.data.labels = first.map(m => lbl(m.date));
+    c.season.data.datasets[0].data = first.map(m => Math.round(m.sats / m.days));
+    c.season.data.datasets[1].data = first.map(m => +m.fullH.toFixed(2));
+    for (const ch of Object.values(c)) ch.update("none");
+  }
+
+  // ---------- Orchestration ----------
+  let lastResult = null, pending = false;
+  function schedule() { if (pending) return; pending = true; requestAnimationFrame(() => { pending = false; run(); }); }
+  function run() {
+    syncVisibility();
+    lastResult = simulate(state, new Date());
+    renderSchedule(lastResult);
+    renderDay(lastResult);
+    renderMetrics(lastResult);
+    renderCharts(lastResult);
+    writeHeight();
+    saveState();
+  }
+
+  buildForm(); buildMonthButtons(); writeInputs(); bindForm(); renderMinerCards(); bindMinerCards(); initCharts(); run();
+
+  const mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  if (mq && mq.addEventListener) mq.addEventListener("change", () => { retheme(); });
+  new MutationObserver(() => { retheme(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  window.SolarSats = { simulate, subsidyOfEpoch, subsidySum, remainingSubsidy, estimatedHeight, DEFAULTS, MINERS };
+})();
+</script>
+</body>
+</html>
