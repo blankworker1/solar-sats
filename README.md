@@ -8,7 +8,7 @@
 
 SolarSats is an open-source calculator for anyone considering mining as an alternative to buying bitcoin. Pick a miner, describe your solar site, and it estimates the sats you'd stack over the rig's life, block by block, across the halving schedule. Every figure is in sats: no fiat and no BTC price.
 
-**[Open the calculator →](https://YOUR-USERNAME.github.io/solar-sats/)**
+**[Open the calculator →](https://blankworker1.github.io/solar-sats/)**
 
 ## What it does
 
